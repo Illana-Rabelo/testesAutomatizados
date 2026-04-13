@@ -16,17 +16,14 @@ public class VeterinarioService {
 
     @Transactional(readOnly = true)
     public List<Veterinario> buscaVeterinariosComParteNome(String nome){
-        return repositorio.findByNomeContains(nome);
+       
+        return repositorio.findByNomeContainingIgnoreCase(nome);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Veterinario> buscaVeterinariosPeloId(Integer id){
+    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){ 
+    
         return repositorio.findById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Veterinario> buscaTodosVeterinarios(){
-        return repositorio.findAll();
     }
 
     @Transactional
