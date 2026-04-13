@@ -1,5 +1,6 @@
 package org.iftm.gerenciadorveterinarios.repositories;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +18,12 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
    List<Veterinario> findByNomeContainingIgnoreCase(String trecho);
 
    // Para o Teste 3 (Busca por salário)
-    List<Veterinario> findBySalarioGreaterThan(Double salario);
-    
-    List<Veterinario> findBySalarioLessThan(Double salario);
-    
-    List<Veterinario> findBySalarioBetween(Double min, Double max);
-}
+   List<Veterinario> findBySalarioGreaterThan(Double salario);
+
+   List<Veterinario> findBySalarioLessThan(Double salario);
+
+   List<Veterinario> findBySalarioBetween(Double min, Double max);
+
+   // Para o Teste 4 (Busca por data de nascimento)
+   List<Veterinario> findByDataNascimentoBetween(Instant inicio, Instant fim);
+};
