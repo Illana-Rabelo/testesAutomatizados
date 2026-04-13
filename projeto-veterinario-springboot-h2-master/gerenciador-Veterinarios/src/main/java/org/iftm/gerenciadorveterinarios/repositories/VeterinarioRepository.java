@@ -26,4 +26,7 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 
    // Para o Teste 4 (Busca por data de nascimento)
    List<Veterinario> findByDataNascimentoBetween(Instant inicio, Instant fim);
+
+   // Para o Teste 5 (Contagem de veterinários com salário acima de um valor)
+   long countBySalarioGreaterThan(Double valor);
 };
