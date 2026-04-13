@@ -82,7 +82,7 @@ public class VeterinarioRepositoryTest {
         List<Veterinario> result = repository.findBySalarioLessThan(4000.0);
 
         // Assert
-        assertEquals(1, result.size()); // apenas a Conceição (3500.0)
+        assertEquals(1, result.size()); // Apenas a Conceição (3500.0)
     }
 
     // Cenário C: Faixa salarial (Mínimo e Máximo)
@@ -92,7 +92,7 @@ public class VeterinarioRepositoryTest {
         List<Veterinario> result = repository.findBySalarioBetween(3000.0, 7000.0);
 
         // Assert
-        assertEquals(2, result.size()); // ambos estão nesta faixa
+        assertEquals(2, result.size()); // Ambos estão nesta faixa
     }
 
     // Ciclo 4 - Teste 4: Busca por data de nascimento (Between)
@@ -107,5 +107,18 @@ public class VeterinarioRepositoryTest {
 
         // Assert
         assertEquals(1, result.size()); // deve achar apenas o Pedro (1990)
+    }
+
+    // Ciclo 6 - Teste 5: Contagem de veterinários por salário
+    @Test
+    void countBySalarioGreaterThanDeveriaRetornarContagemCorreta() {
+        // Arrange: Pedro(6000) e Erica(5500) ganham > 5000
+        Double teto = 5000.0;
+
+        // Act
+        long count = repository.countBySalarioGreaterThan(teto);
+
+        // Assert
+        assertEquals(2, count);
     }
 }
