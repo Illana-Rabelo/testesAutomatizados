@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ public class VeterinarioRepositoryTest {
         List<Veterinario> result = repository.findBySalarioGreaterThan(5000.0);
 
         // Assert
-        assertEquals(1, result.size());  // apenas o Pedro
+        assertEquals(1, result.size());
     }
 
     // Cenário B: Salário inferior a um valor
@@ -81,7 +82,7 @@ public class VeterinarioRepositoryTest {
         List<Veterinario> result = repository.findBySalarioLessThan(4000.0);
 
         // Assert
-        assertEquals(1, result.size()); // apenas a Conceição 
+        assertEquals(1, result.size()); // apenas a Conceição (3500.0)
     }
 
     // Cenário C: Faixa salarial (Mínimo e Máximo)
@@ -91,6 +92,20 @@ public class VeterinarioRepositoryTest {
         List<Veterinario> result = repository.findBySalarioBetween(3000.0, 7000.0);
 
         // Assert
-        assertEquals(2, result.size()); // Ambos estão nesta faixa
+        assertEquals(2, result.size()); // ambos estão nesta faixa
+    }
+
+    // Ciclo 4 - Teste 4: Busca por data de nascimento (Between)
+    @Test
+    void findByDataNascimentoBetweenDeveriaRetornarVeterinariosNoPeriodo() {
+        // Arrange
+        Instant dataInicio = Instant.parse("1980-01-01T00:00:00Z");
+        Instant dataTermino = Instant.parse("1992-12-31T23:59:59Z");
+
+        // Act
+        List<Veterinario> result = repository.findByDataNascimentoBetween(dataInicio, dataTermino);
+
+        // Assert
+        assertEquals(1, result.size()); // deve achar apenas o Pedro (1990)
     }
 }
