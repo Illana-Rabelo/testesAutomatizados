@@ -2,41 +2,46 @@ package org.iftm.gerenciadorveterinarios.entities;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "tb_veterinario")
 public class Veterinario {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nome;
+
+    @Column(unique = true)
     private String email;
+
     private String especialidade;
-    private BigDecimal salario;
-    
+
+    private Double salario;
+
+    private Instant dataNascimento;
+
     public Veterinario() {
     }
 
-    public Veterinario(Integer id, String nome, String email, String especialidade, BigDecimal salario) {
+    public Veterinario(Integer id, String nome, String email, String especialidade, Double salario,
+            Instant dataNascimento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.especialidade = especialidade;
         this.salario = salario;
+        this.dataNascimento = dataNascimento;
     }
 
-    public void setId(Integer id){
-        this.id = id;
-    }
-    
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -63,15 +68,19 @@ public class Veterinario {
         this.especialidade = especialidade;
     }
 
-    public BigDecimal getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(BigDecimal salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 
-    
+    public Instant getDataNascimento() {
+        return dataNascimento;
+    }
 
-    //private Instant dataContratacao;
+    public void setDataNascimento(Instant dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 }
