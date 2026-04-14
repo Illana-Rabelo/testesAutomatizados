@@ -2,7 +2,6 @@ package org.iftm.gerenciadorveterinarios.servicies;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.iftm.gerenciadorveterinarios.entities.Veterinario;
 import org.iftm.gerenciadorveterinarios.repositories.VeterinarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,17 @@ public class VeterinarioService {
 
     @Transactional(readOnly = true)
     public List<Veterinario> buscaVeterinariosComParteNome(String nome){
-       
         return repositorio.findByNomeContainingIgnoreCase(nome);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){ 
-    
+    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){
         return repositorio.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Veterinario> buscaTodosVeterinarios(){
+        return repositorio.findAll();
     }
 
     @Transactional
