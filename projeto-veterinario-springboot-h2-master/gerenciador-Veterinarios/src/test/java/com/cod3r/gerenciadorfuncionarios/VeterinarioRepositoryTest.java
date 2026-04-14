@@ -2,6 +2,7 @@ package com.cod3r.gerenciadorfuncionarios;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
@@ -12,6 +13,7 @@ import org.iftm.gerenciadorveterinarios.entities.Veterinario;
 import org.iftm.gerenciadorveterinarios.repositories.VeterinarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @DataJpaTest
 public class VeterinarioRepositoryTest {
@@ -121,4 +123,23 @@ public class VeterinarioRepositoryTest {
         // Assert
         assertEquals(2, count);
     }
+
+    // Ciclo 7 - Teste 6: Validação de e-mail único
+    @Test
+void salvarVeterinarioComEmailDuplicadoDeveriaLancasExcecao() {
+    // Arrange: pegamos um e-mail que ja existe no banco 
+    String emailExistente = "pedro@email.com";
+    
+    Veterinario v2 = new Veterinario(); 
+    v2.setNome("Novo Pedro");
+    v2.setEmail(emailExistente);
+    v2.setEspecialidade("Clínica");
+    v2.setSalario(4000.0);
+    v2.setDataNascimento(Instant.now());
+    
+    // Act & Assert
+    assertThrows(DataIntegrityViolationException.class, () -> {
+        repository.saveAndFlush(v2); // o flush obriga o banco a validar 
+    });
+}
 }
