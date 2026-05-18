@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VeterinarioService {
+    
     @Autowired
     private VeterinarioRepository repositorio;
 
@@ -30,11 +31,32 @@ public class VeterinarioService {
 
     @Transactional
     public Veterinario salvar(Veterinario veterinario){
+        if (veterinario.getSalario() != null && veterinario.getSalario() < 1518.00) {
+            throw new IllegalArgumentException("O salário não pode ser inferior ao salário mínimo.");
+        }
         return repositorio.save(veterinario);
     }
 
     @Transactional
     public void apagar(Veterinario veterinario){
+        repositorio.delete(veterinario);
+    }
+
+    // regra de atualização
+    @Transactional
+    public Veterinario concederAumento(Long id, Double valorAumento) {
+        Veterinario vet = repositorio.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Veterinário não encontrado."));
+        
+        vet.setSalario(vet.getSalario() + valorAumento);
+        return repositorio.save(vet);
+    }
+
+    @Transactional
+    public void apagarPeloId(Long id) {
+        Veterinario veterinario = repositorio.findById(id)
+            .orElseThrow(() -> new RuntimeException("Veterinário não encontrado para exclusão."));
+        
         repositorio.delete(veterinario);
     }
 }
