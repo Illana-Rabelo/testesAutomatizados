@@ -83,4 +83,9 @@ public class Veterinario {
     public void setDataNascimento(Instant dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
+
+    public void setId(Long id) {
+    this.id = id.intValue();
+}
+
 }
