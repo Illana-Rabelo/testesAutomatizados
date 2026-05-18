@@ -1,4 +1,4 @@
-package org.iftm.gerenciadorveterinarios.services; // Pacote correto!
+package org.iftm.gerenciadorveterinarios.services; 
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class VeterinarioServiceTest_IllanaRabelo { // Removido o 'public' para agradar ao SonarQube!
+class VeterinarioServiceTest_IllanaRabelo { 
 
     @InjectMocks
     private VeterinarioService service;
@@ -53,7 +53,6 @@ class VeterinarioServiceTest_IllanaRabelo { // Removido o 'public' para agradar 
         listaFake.add(vet1);
         listaFake.add(vet2);
         
-        // Garante que o método do repositório usado aqui existe na tua interface VeterinarioRepository
         when(repository.findByNomeContainingIgnoreCase(termoBusca)).thenReturn(listaFake);
 
         List<Veterinario> resultado = service.buscaVeterinariosComParteNome(termoBusca);
