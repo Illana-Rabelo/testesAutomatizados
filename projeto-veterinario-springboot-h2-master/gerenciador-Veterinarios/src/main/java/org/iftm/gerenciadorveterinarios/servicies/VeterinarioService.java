@@ -12,21 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class VeterinarioService {
     
     @Autowired
-    private VeterinarioRepository repositorio;
+    private VeterinarioRepository repositorio; // Mantido o padrão original com 'o'
 
     @Transactional(readOnly = true)
     public List<Veterinario> buscaVeterinariosComParteNome(String nome){
         return repositorio.findByNomeContainingIgnoreCase(nome);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){
-        return repositorio.findById(id);
-    }
-
+  // Adicione ou corrija para este nome (com o "s" no final que a HomeController está pedindo na linha 30)
     @Transactional(readOnly = true)
     public List<Veterinario> buscaTodosVeterinarios(){
         return repositorio.findAll();
+    }
+
+    // Adicione ou corrija para este nome (com o "Id" maiúsculo que a VeterinarioController pede nas linhas 46 e 64)
+    @Transactional(readOnly = true)
+    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){
+        return repositorio.findById(id);
     }
 
     @Transactional
@@ -37,12 +39,20 @@ public class VeterinarioService {
         return repositorio.save(veterinario);
     }
 
+    // Método que o VeterinarioController usa na linha 54
     @Transactional
     public void apagar(Veterinario veterinario){
         repositorio.delete(veterinario);
     }
 
-    // regra de atualização
+    // Método com ID exigido pelo Desafio 2 do PDF
+    @Transactional
+    public void apagar(Long id) {
+        Veterinario vet = repositorio.findById(id)
+            .orElseThrow(() -> new RuntimeException("Veterinário não encontrado para exclusão."));
+        repositorio.delete(vet);
+    }
+
     @Transactional
     public Veterinario concederAumento(Long id, Double valorAumento) {
         Veterinario vet = repositorio.findById(id)
@@ -50,13 +60,5 @@ public class VeterinarioService {
         
         vet.setSalario(vet.getSalario() + valorAumento);
         return repositorio.save(vet);
-    }
-
-    @Transactional
-    public void apagarPeloId(Long id) {
-        Veterinario veterinario = repositorio.findById(id)
-            .orElseThrow(() -> new RuntimeException("Veterinário não encontrado para exclusão."));
-        
-        repositorio.delete(veterinario);
     }
 }
