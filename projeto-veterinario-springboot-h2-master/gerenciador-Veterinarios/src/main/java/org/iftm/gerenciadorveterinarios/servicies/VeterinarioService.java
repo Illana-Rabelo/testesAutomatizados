@@ -12,45 +12,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class VeterinarioService {
     
     @Autowired
-    private VeterinarioRepository repositorio; // Mantido o padrão original com 'o'
+    private VeterinarioRepository repositorio;
 
     @Transactional(readOnly = true)
     public List<Veterinario> buscaVeterinariosComParteNome(String nome){
         return repositorio.findByNomeContainingIgnoreCase(nome);
     }
 
-  // Adicione ou corrija para este nome (com o "s" no final que a HomeController está pedindo na linha 30)
-    @Transactional(readOnly = true)
-    public List<Veterinario> buscaTodosVeterinarios(){
-        return repositorio.findAll();
-    }
-
-    // Adicione ou corrija para este nome (com o "Id" maiúsculo que a VeterinarioController pede nas linhas 46 e 64)
     @Transactional(readOnly = true)
     public Optional<Veterinario> buscaVeterinariosPeloId(Long id){
         return repositorio.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public List<Veterinario> buscaTodosVeterinarios(){
+        return repositorio.findAll();
+    }
+
     @Transactional
     public Veterinario salvar(Veterinario veterinario){
+        // Validação da Proteção de Domínio (Salário Mínimo)
         if (veterinario.getSalario() != null && veterinario.getSalario() < 1518.00) {
             throw new IllegalArgumentException("O salário não pode ser inferior ao salário mínimo.");
         }
         return repositorio.save(veterinario);
     }
 
-    // Método que o VeterinarioController usa na linha 54
     @Transactional
     public void apagar(Veterinario veterinario){
         repositorio.delete(veterinario);
     }
 
-    // Método com ID exigido pelo Desafio 2 do PDF
     @Transactional
-    public void apagar(Long id) {
-        Veterinario vet = repositorio.findById(id)
+    public void apagarPeloId(Long id) {
+        Veterinario veterinario = repositorio.findById(id)
             .orElseThrow(() -> new RuntimeException("Veterinário não encontrado para exclusão."));
-        repositorio.delete(vet);
+        
+        repositorio.delete(veterinario);
     }
 
     @Transactional
