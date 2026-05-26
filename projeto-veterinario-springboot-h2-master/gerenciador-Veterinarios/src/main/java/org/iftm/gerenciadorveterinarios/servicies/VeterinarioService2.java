@@ -1,0 +1,60 @@
+package org.iftm.gerenciadorveterinarios.servicies;
+
+import java.util.List;
+import java.util.Optional;
+import org.iftm.gerenciadorveterinarios.entities.Veterinario;
+import org.iftm.gerenciadorveterinarios.repositories.VeterinarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class VeterinarioService {
+    
+    @Autowired
+    private VeterinarioRepository repositorio; 
+
+    @Transactional(readOnly = true)
+    public List<Veterinario> buscaVeterinariosComParteNome(String nome){
+        return repositorio.findByNomeContainingIgnoreCase(nome);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Veterinario> buscaTodosVeterinarios(){
+        return repositorio.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Veterinario> buscaVeterinariosPeloId(Long id){
+        return repositorio.findById(id);
+    }
+
+    @Transactional
+    public Veterinario salvar(Veterinario veterinario){
+        if (veterinario.getSalario() != null && veterinario.getSalario() < 1518.00) {
+            throw new IllegalArgumentException("O salário não pode ser inferior ao salário mínimo.");
+        }
+        return repositorio.save(veterinario);
+    }
+
+    @Transactional
+    public void apagar(Veterinario veterinario){
+        repositorio.delete(veterinario);
+    }
+
+    @Transactional
+    public void apagar(Long id) {
+        Veterinario vet = repositorio.findById(id)
+            .orElseThrow(() -> new RuntimeException("Veterinário não encontrado para exclusão."));
+        repositorio.delete(vet);
+    }
+
+    @Transactional
+    public Veterinario concederAumento(Long id, Double valorAumento) {
+        Veterinario vet = repositorio.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Veterinário não encontrado."));
+        
+        vet.setSalario(vet.getSalario() + valorAumento);
+        return repositorio.save(vet);
+    }
+}
